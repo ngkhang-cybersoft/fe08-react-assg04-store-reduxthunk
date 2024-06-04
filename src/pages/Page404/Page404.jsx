@@ -1,27 +1,30 @@
 import { Link } from "react-router-dom";
-import BG_ERROR from '../../assets/img/bg-page404.png'
+import bg_error from "../../assets/img/bg-page404.png";
 import "./page404.scss";
+import { Button, Col, Row } from "antd";
 
 const Page404 = () => {
   return (
-    <div
+    <Row
       id="page404"
-      style={{backgroundImage: `url(${BG_ERROR})`}}
-      className="vh-100 d-flex justify-content-center align-items-center position-relative"
+      justify="center"
+      align="middle"
+      className="vh-100 position-relative"
+      style={{ backgroundImage: `url(${bg_error})` }}
     >
-      <div className="p-3 rounded-3 shadow-lg">
+      <Col span={12} align="middle" className="p-3 rounded-3 shadow-lg">
         <h1 className="text-center mb-4">Page Not Pound</h1>
-        <p className="mb-5 fs-2">
+        <p className="mb-5 fs-3">
           Sorry, we can't find that page. You'll find lots to explore on the
           home page.
         </p>
-        <div className="text-center">
-          <Link className="btn btn-light text-uppercase px-5 py-2" to={"/"}>
-              back to home
-          </Link>
-        </div>
-      </div>
-    </div>
+        <Link to="/" className="d-inline-block w-50">
+          <Button block className="text-uppercase py-2">
+            back to home
+          </Button>
+        </Link>
+      </Col>
+    </Row>
   );
 };
 
