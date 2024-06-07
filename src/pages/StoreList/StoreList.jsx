@@ -1,60 +1,42 @@
 import {
-  Button,
-  Space,
   Table,
   Input,
   Flex,
   Row,
   Col,
+  Button,
   ConfigProvider,
+  Space,
 } from 'antd';
 
+import useRedux from '../../hooks/useRedux';
+import { useEffect, useState } from 'react';
+import { getStoresAsync } from '../../redux/reducers/storeReducer';
+import { GLOBAL_STATES, REDUCERS } from '../../utils/constants';
+import tableProps from './tableProps';
+
+const { storeReducer } = REDUCERS;
+const { lstStore } = GLOBAL_STATES;
+
 const { Search } = Input;
-
-const dataSource = [
-  {
-    id: '1',
-    name: 'Khải Sneaker',
-    alias: 'khai-sneaker',
-    latitude: '10.771663',
-    longtitude: '106.669631',
-    description: '379 sư vạn hạnh quận 10',
-    image:
-      'https://apistore.cybersoft.edu.vn/images/https://localhost:44366/images/store1.jpg',
-    deleted: false,
-  },
-  {
-    id: 2,
-    name: 'Hiếu Sneakers',
-    alias: 'hieu-sneakers',
-    latitude: '10.766579',
-    longtitude: '106.665268',
-    description: '589 3 tháng 2 quận 10',
-    image: 'https://apistore.cybersoft.edu.vn/images/store2.jpg',
-    deleted: false,
-  },
-];
-
 const btnAction = [
   {
     id: 1,
     title: 'View',
     btnColor: {
-      colorPrimary: `#6253E1`,
-      colorPrimaryHover: `#3E1`,
-      colorPrimaryActive: `#6253A1`,
+      colorPrimary: `rgb(0 123 255)`,
+      colorPrimaryHover: `rgb(0 105 217)`,
     },
-    callback: (id) => {
-      console.log('View', id);
+    callback: (alias) => {
+      console.log('Store alias: ', alias);
     },
   },
   {
     id: 2,
     title: 'Edit',
     btnColor: {
-      colorPrimary: `#6253E1`,
-      colorPrimaryHover: `#3E1`,
-      colorPrimaryActive: `#6253A1`,
+      colorPrimary: `rgb(255 193 7)`,
+      colorPrimaryHover: `rgb(224 168 0)`,
     },
     callback: (id) => {
       console.log('Edit', id);
@@ -64,9 +46,8 @@ const btnAction = [
     id: 3,
     title: 'Delete',
     btnColor: {
-      colorPrimary: `#6253E1`,
-      colorPrimaryHover: `#3E1`,
-      colorPrimaryActive: `#6253A1`,
+      colorPrimary: `rgb(220 53 69)`,
+      colorPrimaryHover: `rgb(200 35 51)`,
     },
     callback: (id) => {
       console.log('Delete', id);
@@ -80,11 +61,13 @@ const columns = [
     dataIndex: 'id',
     key: 'id',
     hidden: true,
+    ellipsis: true,
   },
   {
     title: 'Name',
     dataIndex: 'name',
     key: 'name',
+    ellipsis: true,
     showSorterTooltip: {
       target: 'full-header',
     },
@@ -96,10 +79,12 @@ const columns = [
     title: 'Description',
     dataIndex: 'description',
     key: 'description',
+    ellipsis: true,
   },
   {
     title: 'Action',
     key: 'action',
+    ellipsis: true,
     render: (_, record) => (
       <Space size="middle" wrap={true}>
         {btnAction.map((btn) => {
@@ -115,7 +100,7 @@ const columns = [
               <Button
                 type="primary"
                 size="middle"
-                onClick={() => btn.callback(record.id)}
+                onClick={() => btn.callback(record.alias)}
               >
                 {btn.title}
               </Button>
@@ -126,10 +111,22 @@ const columns = [
     ),
   },
 ];
-
 const onSearch = (value, _e, info) => console.log(info?.source, value, info);
 
 const StoreList = () => {
+  const [stores, dispatch] = useRedux(storeReducer, lstStore);
+  const [loading, setLoading] = useState(true);
+  const handleLoading = (status) => {
+    setLoading(status);
+  };
+
+  useEffect(() => {
+    handleLoading(true);
+    const action = getStoresAsync('get all stores');
+    dispatch(action);
+    handleLoading(false);
+  }, [dispatch]);
+
   return (
     <>
       <Flex className="mb-4">
@@ -155,18 +152,10 @@ const StoreList = () => {
       </Flex>
 
       <Table
-        loading={false}
-        tableLayout="fixed"
+        {...tableProps}
+        loading={loading}
+        dataSource={stores}
         columns={columns}
-        dataSource={dataSource}
-        pagination={{
-          position: ['bottomRight'],
-          defaultCurrent: 1,
-          total: 200,
-        }}
-        showSorterTooltip={{
-          target: 'sorter-icon',
-        }}
       />
     </>
   );
