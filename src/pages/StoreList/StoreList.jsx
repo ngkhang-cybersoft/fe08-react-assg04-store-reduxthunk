@@ -17,6 +17,8 @@ import {
 } from '../../redux/reducers/storeReducer';
 import { GLOBAL_STATES, REDUCERS } from '../../utils/constants';
 import tableProps from './tableProps';
+import ModalAntd from '../../components/ModalAntd/ModalAntd';
+import FormAntd from '../../components/FormAntd/FormAntd';
 
 const { Search } = Input;
 const { storeReducer } = REDUCERS;
@@ -27,6 +29,8 @@ const onSearch = (value, _e, info) => console.log(info?.source, value, info);
 const StoreList = () => {
   const [stores, dispatch] = useRedux(storeReducer, lstStore);
   const [loading, setLoading] = useState(true);
+  const [modal, setModal] = useState(false);
+  const [storeEdit, setStoreEdit] = useState({});
 
   const btnAction = [
     {
@@ -47,8 +51,9 @@ const StoreList = () => {
         colorPrimary: `rgb(255 193 7)`,
         colorPrimaryHover: `rgb(224 168 0)`,
       },
-      callback: ({ id }) => {
-        console.log('Edit', id);
+      callback: (data) => {
+        setStoreEdit(data);
+        setModal(true);
       },
     },
     {
@@ -161,6 +166,9 @@ const StoreList = () => {
         dataSource={stores}
         columns={columns}
       />
+      <ModalAntd isOpen={modal} handleModal={setModal}>
+        <FormAntd action="edit" initialValues={storeEdit} callback={setModal} />
+      </ModalAntd>
     </>
   );
 };

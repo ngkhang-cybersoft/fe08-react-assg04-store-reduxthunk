@@ -11,8 +11,6 @@ export const BASE_API = 'https://apistore.cybersoft.edu.vn/';
 export const API_STORE = {
   GET_STORES: 'api/Store/getAll',
   GET_STORE_BY_KEYWORD: (keyword) => `api/Store/getAll?${keyword}`,
-  GET_STORE_PAGING: (pageIndex, pageSize) =>
-    `api/Store/getpaging?pageIndex=${pageIndex}&pageSize=${pageSize}`,
   GET_STORE_BY_ID: (storeId) => `api/Store/getbyid?id=${storeId}`,
   ADD_STORE: `api/Store`,
   UPDATE_STORE: (storeId) => `api/Store?id=${storeId}`,

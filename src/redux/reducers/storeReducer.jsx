@@ -3,7 +3,6 @@ import httpStore from '../../utils/config';
 import { API_STORE, GLOBAL_STATES, REDUCERS } from '../../utils/constants';
 
 const { lstStore } = GLOBAL_STATES;
-// const { GET_STORES } = API_STORE;
 
 const initialState = {
   [lstStore]: [],
@@ -42,6 +41,30 @@ export const delStoreAsync = (storeId) => {
       return res.data;
     } catch (error) {
       return error.response.data;
+    }
+  };
+};
+
+export const addStoreAsync = (store) => {
+  return async () => {
+    try {
+      const res = await httpStore.post(API_STORE.ADD_STORE, store);
+      return [res.data.statusCode, res.data.content];
+    } catch (error) {
+      return [error.response.status, error.response.statusText];
+    }
+  };
+};
+
+export const updateStoreAsync = (id, data) => {
+  return async (dispatch) => {
+    try {
+      const res = await httpStore.put(API_STORE.UPDATE_STORE(id), data);
+      const actionThunk = getStoresAsync();
+      dispatch(actionThunk);
+      return [res.data.statusCode, res.data.content];
+    } catch (error) {
+      return [error.response.status, error.response.statusText];
     }
   };
 };
