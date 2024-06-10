@@ -16,6 +16,7 @@ export const API_STORE = {
   GET_STORE_BY_ID: (storeId) => `api/Store/getbyid?id=${storeId}`,
   ADD_STORE: `api/Store`,
   UPDATE_STORE: (storeId) => `api/Store?id=${storeId}`,
+  DELETE_STORE: 'api/Store',
 };
 
 export const REDUCERS = {
