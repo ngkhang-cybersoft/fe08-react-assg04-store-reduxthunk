@@ -32,7 +32,7 @@ const FormAntd = ({ action, initialValues = {}, callback }) => {
     let [statusCode] = await dispatch(actionThunk);
     if (statusCode === 200) {
       // TODO: Open toast when success
-      action === 'add' ? navigate('/admin/store') : callback(false);
+      action === 'add' ? navigate('/admin/store') : callback();
     }
   };
 

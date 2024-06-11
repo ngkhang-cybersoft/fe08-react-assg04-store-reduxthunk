@@ -19,6 +19,7 @@ import { GLOBAL_STATES, REDUCERS } from '../../utils/constants';
 import tableProps from './tableProps';
 import ModalAntd from '../../components/ModalAntd/ModalAntd';
 import FormAntd from '../../components/FormAntd/FormAntd';
+import useRouter from '../../hooks/useRouter';
 
 const { Search } = Input;
 const { storeReducer } = REDUCERS;
@@ -28,6 +29,7 @@ const onSearch = (value, _e, info) => console.log(info?.source, value, info);
 
 const StoreList = () => {
   const [stores, dispatch] = useRedux(storeReducer, lstStore);
+  const [, navigate] = useRouter();
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(false);
   const [storeEdit, setStoreEdit] = useState({});
@@ -40,9 +42,7 @@ const StoreList = () => {
         colorPrimary: `rgb(0 123 255)`,
         colorPrimaryHover: `rgb(0 105 217)`,
       },
-      callback: ({ alias }) => {
-        console.log('Store alias: ', alias);
-      },
+      callback: ({ alias }) => navigate(`${alias}`),
     },
     {
       id: 2,
@@ -167,7 +167,11 @@ const StoreList = () => {
         columns={columns}
       />
       <ModalAntd isOpen={modal} handleModal={setModal}>
-        <FormAntd action="edit" initialValues={storeEdit} callback={setModal} />
+        <FormAntd
+          action="edit"
+          initialValues={storeEdit}
+          callback={() => setModal(false)}
+        />
       </ModalAntd>
     </>
   );

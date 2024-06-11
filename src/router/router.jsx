@@ -3,6 +3,7 @@ import Home from '../pages/Home/Home';
 import StoreList from '../pages/StoreList/StoreList';
 import Page404 from '../pages/Page404/Page404';
 import AdminTemplate from '../template/AdminTemplate';
+import DetailStore from '../pages/DetailStore/DetailStore';
 
 const routers = [
   {
@@ -25,6 +26,11 @@ const routers = [
         id: 2,
         path: 'store/add-store',
         element: <AddStore />,
+      },
+      {
+        id: 3,
+        path: 'store/:slugStore',
+        element: <DetailStore />,
       },
     ],
   },
