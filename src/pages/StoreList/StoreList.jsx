@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react';
 import {
   getStoresAsync,
   delStoreAsync,
+  searchStoreAsync,
 } from '../../redux/reducers/storeReducer';
 import { GLOBAL_STATES, REDUCERS } from '../../utils/constants';
 import tableProps from './tableProps';
@@ -25,14 +26,27 @@ const { Search } = Input;
 const { storeReducer } = REDUCERS;
 const { lstStore } = GLOBAL_STATES;
 
-const onSearch = (value, _e, info) => console.log(info?.source, value, info);
-
 const StoreList = () => {
   const [stores, dispatch] = useRedux(storeReducer, lstStore);
+  // const [search, setSearch] = useState([]);
+  const [searchKeyword, setSearchKeyword] = useState('');
+  const [listStore, setListStore] = useState([]);
+
   const [, navigate] = useRouter();
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(false);
   const [storeEdit, setStoreEdit] = useState({});
+
+  const onSearch = (value, _e, info) => {
+    setSearchKeyword(info.source !== 'clear' ? value : '');
+    value = '';
+  };
+
+  const handleSearching = async (keyword) => {
+    const actionThunk = searchStoreAsync(keyword);
+    const data = await dispatch(actionThunk);
+    setListStore(data);
+  };
 
   const btnAction = [
     {
@@ -131,10 +145,17 @@ const StoreList = () => {
 
   useEffect(() => {
     setLoading(true);
-    const action = getStoresAsync();
-    dispatch(action);
+    if (searchKeyword) handleSearching(searchKeyword);
+    else {
+      const actionThunk = getStoresAsync();
+      dispatch(actionThunk);
+    }
     setLoading(false);
-  }, [dispatch]);
+  }, [dispatch, searchKeyword]);
+
+  useEffect(() => {
+    setListStore(stores);
+  }, [stores]);
 
   return (
     <>
@@ -163,7 +184,7 @@ const StoreList = () => {
       <Table
         {...tableProps}
         loading={loading}
-        dataSource={stores}
+        dataSource={listStore}
         columns={columns}
       />
       <ModalAntd isOpen={modal} handleModal={setModal}>

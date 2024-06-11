@@ -4,12 +4,10 @@ import {
   addStoreAsync,
   updateStoreAsync,
 } from '../../redux/reducers/storeReducer';
-import { useNavigate } from 'react-router-dom';
 import { useForm } from 'antd/es/form/Form';
 import { configFields, configForm } from './configForm';
 
 const FormAntd = ({ action, initialValues = {}, callback }) => {
-  const navigate = useNavigate();
   const [, dispatch] = useRedux();
   const [form] = useForm();
 
@@ -32,7 +30,7 @@ const FormAntd = ({ action, initialValues = {}, callback }) => {
     let [statusCode] = await dispatch(actionThunk);
     if (statusCode === 200) {
       // TODO: Open toast when success
-      action === 'add' ? navigate('/admin/store') : callback();
+      action === 'add' ? form.resetFields() : callback();
     }
   };
 

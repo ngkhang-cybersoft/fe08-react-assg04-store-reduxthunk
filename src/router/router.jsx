@@ -32,6 +32,11 @@ const routers = [
         path: 'store/:slugStore',
         element: <DetailStore />,
       },
+      {
+        id: 4,
+        path: '',
+        element: <Page404 />,
+      },
     ],
   },
   {

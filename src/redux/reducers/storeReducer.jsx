@@ -68,3 +68,10 @@ export const updateStoreAsync = (id, data) => {
     }
   };
 };
+
+export const searchStoreAsync = (keyWord) => {
+  return async () => {
+    const res = await httpStore.get(API_STORE.GET_STORE_BY_KEYWORD(keyWord));
+    return res.data.content;
+  };
+};
