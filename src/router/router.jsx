@@ -14,7 +14,6 @@ const routers = [
   {
     id: 'admin',
     path: 'admin',
-    // TODO: Handle URL: localhost//admin -> page not pound
     element: <AdminTemplate />,
     children: [
       {

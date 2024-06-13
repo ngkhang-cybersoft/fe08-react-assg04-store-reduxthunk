@@ -7,7 +7,6 @@ import { Layout, Menu } from 'antd';
 import icons from '../utils/icons';
 const { Content, Sider } = Layout;
 
-// BUG: Highlight menu when reload page -> read URL param -> Highlight
 const navList = [
   {
     key: 'sub1',

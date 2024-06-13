@@ -80,8 +80,6 @@ const StoreList = () => {
       callback: async ({ id }) => {
         const actionThunk = delStoreAsync(id);
         let { content } = await dispatch(actionThunk);
-        console.log(content);
-        // TODO: Toast mess when delete success
       },
     },
   ];
